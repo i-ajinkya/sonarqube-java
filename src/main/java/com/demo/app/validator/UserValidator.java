@@ -18,18 +18,20 @@ public class UserValidator implements Validator {
 	public boolean supports(Class<?> aClass) {
 		return User.class.equals(aClass);
 	}
+	
+	private static final USERNAME = "username";
 
 	@Override
 	public void validate(Object o, Errors errors) {
 		User user = (User) o;
 
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username",
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, USERNAME,
 				"NotEmpty");
 		if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
-			errors.rejectValue("username", "Size.userForm.username");
+			errors.rejectValue(USERNAME, "Size.userForm.username");
 		}
 		if (userService.findByUsername(user.getUsername()) != null) {
-			errors.rejectValue("username", "Duplicate.userForm.username");
+			errors.rejectValue(USERNAME, "Duplicate.userForm.username");
 		}
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password",
